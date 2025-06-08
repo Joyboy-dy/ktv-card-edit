@@ -13,6 +13,17 @@
 - **Prévisualisation en temps réel :** Visualisez les changements apportés à la carte instantanément.
 - **Design moderne :** Interface utilisateur épurée et réactive.
 
+## Exemples de cartes
+
+Voici quelques exemples de cartes générées avec l'application :
+
+![Exemple de carte 1](/public/ex1.png)
+![Exemple de carte 2](/public/ex2.png)
+![Exemple de carte 3](/public/ex3.png)
+![Exemple de carte 4](/public/ex4.png)
+![Exemple de carte 5](/public/ex5.png)
+![Exemple de carte 6](/public/ex6.png)
+
 ## Technologies Utilisées
 
 - [**Next.js**](https://nextjs.org/) : Framework React pour la construction d'applications web.
