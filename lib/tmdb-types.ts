@@ -15,6 +15,7 @@ export interface TmdbMedia {
   production_companies?: { id: number; name: string; logo_path: string | null; origin_country: string }[];
   networks?: { id: number; name: string; logo_path: string | null; origin_country: string }[];
   spoken_languages?: { english_name: string; iso_639_1: string; name: string }[];
+  watch_providers?: WatchProviders;
 }
 
 export interface TmdbSearchResponse {
@@ -22,4 +23,31 @@ export interface TmdbSearchResponse {
   results: TmdbMedia[];
   total_pages: number;
   total_results: number;
+}
+
+export interface WatchProviders {
+  id: number;
+  results: {
+    [countryCode: string]: {
+      link: string;
+      flatrate?: Array<{
+        display_priority: number;
+        logo_path: string;
+        provider_id: number;
+        provider_name: string;
+      }>;
+      rent?: Array<{
+        display_priority: number;
+        logo_path: string;
+        provider_id: number;
+        provider_name: string;
+      }>;
+      buy?: Array<{
+        display_priority: number;
+        logo_path: string;
+        provider_id: number;
+        provider_name: string;
+      }>;
+    };
+  };
 }

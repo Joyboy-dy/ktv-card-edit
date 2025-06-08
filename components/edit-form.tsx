@@ -26,6 +26,12 @@ export function EditForm({ initialData }: EditFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
 
+  const formatGenres = (genresString: string) => {
+    let formatted = genresString.replace(/&/g, ', ');
+    formatted = formatted.replace(/Science-Fiction/g, 'S-F');
+    return formatted;
+  };
+
   const handleSummarizeSynopsis = async () => {
     if (!cardData.synopsis) return;
 
@@ -59,8 +65,8 @@ export function EditForm({ initialData }: EditFormProps) {
       const year = initialData.release_date
         ? parseInt(initialData.release_date.substring(0, 4))
         : initialData.first_air_date
-        ? parseInt(initialData.first_air_date.substring(0, 4))
-        : null;
+          ? parseInt(initialData.first_air_date.substring(0, 4))
+          : null;
 
       // Date pour la saison
       const dateStr = initialData.release_date || initialData.first_air_date;
@@ -99,7 +105,7 @@ export function EditForm({ initialData }: EditFormProps) {
         backgroundImage: initialData.backdrop_path ? `https://image.tmdb.org/t/p/original${initialData.backdrop_path}` : '',
         releaseYear: year,
         rating: initialData.vote_average ? Math.round(initialData.vote_average * 10) : 0,
-        genres: initialData.genres ? initialData.genres.map(genre => genre.name).join(', ') : '',
+        genres: initialData.genres ? formatGenres(initialData.genres.map(genre => genre.name).join(', ')) : '',
         studio,
         platforms,
         season: deducedSeason,
@@ -122,6 +128,9 @@ export function EditForm({ initialData }: EditFormProps) {
     });
   };
 
+  // Pour désactiver toutes les suggestions du navigateur, il faut utiliser autoComplete="off" ET name="random" (ou un nom unique) sur chaque champ.
+  // Pour les champs de type texte, email, url, etc., il faut aussi ajouter autoCorrect="off" et spellCheck={false} pour être exhaustif.
+
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-semibold -mt-4 pb-4">Formulaire d&apos;édition</h2>
@@ -131,10 +140,14 @@ export function EditForm({ initialData }: EditFormProps) {
           <Label htmlFor="season" className='mb-2'>Saison de sortie</Label>
           <Input
             id="season"
+            name="season-random"
             type="text"
             placeholder='Automne'
             value={cardData.season}
             onChange={(e) => setCardData(prevData => ({ ...prevData, season: e.target.value }))}
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
           />
         </div>
         <div className="flex-1">
@@ -150,9 +163,13 @@ export function EditForm({ initialData }: EditFormProps) {
       <div>
         <Input
           id="programName"
+          name="programName-random"
           placeholder='Nom du programme'
           value={cardData.programName}
           onChange={(e) => setCardData(prevData => ({ ...prevData, programName: e.target.value }))}
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
         />
       </div>
 
@@ -161,18 +178,26 @@ export function EditForm({ initialData }: EditFormProps) {
           <Label htmlFor="studio" className='mb-2'>Studio de réalisation</Label>
           <Input
             id="studio"
+            name="studio-random"
             placeholder='MAPA Studio'
             value={cardData.studio}
             onChange={(e) => setCardData(prevData => ({ ...prevData, studio: e.target.value }))}
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
           />
         </div>
         <div className="flex-1">
           <Label htmlFor="platforms" className='mb-2'>Plateformes de diffusion</Label>
           <Input
             id="platforms"
+            name="platforms-random"
             placeholder='Crunchyroll, Netflix'
             value={cardData.platforms}
             onChange={(e) => setCardData(prevData => ({ ...prevData, platforms: e.target.value }))}
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
           />
         </div>
       </div>
@@ -181,12 +206,14 @@ export function EditForm({ initialData }: EditFormProps) {
         <Label htmlFor="rating" className='mb-2'>Note/Score ({cardData.rating}%)</Label>
         <Input
           id="rating"
+          name="rating-random"
           type="range"
           min="0"
           max="100"
           value={cardData.rating}
           onChange={(e) => setCardData(prevData => ({ ...prevData, rating: Number(e.target.value) }))}
           className="cursor-grab active:cursor-grabbing"
+          autoComplete="off"
         />
       </div>
 
@@ -194,9 +221,13 @@ export function EditForm({ initialData }: EditFormProps) {
         <Label htmlFor="synopsis" className='mb-2'>Synopsis</Label>
         <Textarea
           id="synopsis"
+          name="synopsis-random"
           value={cardData.synopsis}
           onChange={(e) => setCardData(prevData => ({ ...prevData, synopsis: e.target.value }))}
           rows={5}
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
         />
         <Button onClick={handleSummarizeSynopsis} disabled={isLoading || !cardData.synopsis} className={`w-full ${hasError ? 'animate-shake' : ''}`}>
           {isLoading ? 'Résumé...' : hasError ? 'Réessayer' : 'Résumer avec IA'}
@@ -207,27 +238,39 @@ export function EditForm({ initialData }: EditFormProps) {
         <Label htmlFor="genres" className='mb-2'>Genres et catégories</Label>
         <Input
           id="genres"
+          name="genres-random"
           placeholder='Action, Aventure, Shonen'
           value={cardData.genres}
-          onChange={(e) => setCardData(prevData => ({ ...prevData, genres: e.target.value }))}
+          onChange={(e) => setCardData(prevData => ({ ...prevData, genres: formatGenres(e.target.value) }))}
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
         />
       </div>
 
       <div>
         <Input
           id="promoImage"
+          name="promoImage-random"
           placeholder='Image promotionnelle (URL)'
           value={cardData.promoImage}
           onChange={(e) => setCardData(prevData => ({ ...prevData, promoImage: e.target.value }))}
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
         />
       </div>
 
       <div>
         <Input
           id="backgroundImage"
+          name="backgroundImage-random"
           placeholder="Image de fond de carte (URL)"
           value={cardData.backgroundImage}
           onChange={(e) => setCardData(prevData => ({ ...prevData, backgroundImage: e.target.value }))}
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
         />
       </div>
 

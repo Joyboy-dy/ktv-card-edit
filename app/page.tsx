@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { SearchBar } from '@/components/search-bar';
+import MovieSearch from '@/components/movie-search';
 import { EditForm } from '@/components/edit-form';
 import { TmdbMedia } from '@/lib/tmdb-types';
 import CardPreview from '@/components/card-preview';
@@ -44,7 +44,7 @@ export default function Home() {
     <CardDataProvider>
       <div className="flex h-screen relative z-10">
         <div className="w-[35%] p-4 flex flex-col items-center justify-start gap-4 pt-8 overflow-y-auto">
-          <SearchBar onSearch={handleSearch} />
+          <MovieSearch onSearch={handleSearch} />
           <div className="mt-8">
             <EditForm initialData={selectedMedia} />
           </div>
